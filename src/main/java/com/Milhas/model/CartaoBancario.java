@@ -1,10 +1,9 @@
-package com.Milhas.user;
+package com.Milhas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 
 
 @Entity

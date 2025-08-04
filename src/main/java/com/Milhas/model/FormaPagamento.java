@@ -1,4 +1,4 @@
-package com.Milhas.user;
+package com.Milhas.model;
 
 public enum FormaPagamento {
     CARTAO,

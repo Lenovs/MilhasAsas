@@ -1,10 +1,10 @@
-package com.Milhas.user;
+package com.Milhas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+
 
 @Entity
 @Data
@@ -18,5 +18,5 @@ public class Milhas {
     private int quantidade;
 
     @ManyToOne
-    private SecurityProperties.User usuario;
+    private User usuario;
 }

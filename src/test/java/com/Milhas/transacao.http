@@ -1,0 +1,7 @@
+### 🔁 Criar uma transação (POST)
+POST http://localhost:8080/transacoes?usuarioId=1&ofertaId=1&formaPagamento=MILHAS
+Content-Type: application/json
+
+### 📥 Listar todas as transações (GET)
+GET http://localhost:8080/transacoes
+Accept: application/json

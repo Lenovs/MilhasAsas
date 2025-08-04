@@ -1,4 +1,4 @@
-package com.Milhas.user;
+package com.Milhas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,6 @@ public class Conta {
 
     private double saldo;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
+    @OneToOne(mappedBy = "conta") // ✅ lado inverso
     private User usuario;
 }

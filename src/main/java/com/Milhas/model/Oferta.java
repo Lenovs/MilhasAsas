@@ -1,4 +1,4 @@
-package com.Milhas.user;
+package com.Milhas.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

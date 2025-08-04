@@ -1,13 +1,12 @@
-package com.Milhas.TransacaoController;
+package com.Milhas.controller;
 
-import com.Milhas.user.FormaPagamento;
+import com.Milhas.model.FormaPagamento;
+import com.Milhas.model.Transacao;
 import com.Milhas.service.TransacaoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -16,13 +15,20 @@ public class TransacaoController {
 
     private final TransacaoService transacaoService;
 
+    // 🔁 POST: realiza uma transação
     @PostMapping
-    public ResponseEntity<String> realizarTransacao(
+    public String realizarTransacao(
             @RequestParam Long usuarioId,
             @RequestParam Long ofertaId,
-            @RequestParam FormaPagamento forma
+            @RequestParam FormaPagamento formaPagamento
     ) {
-        transacaoService.realizarTransacao(usuarioId, ofertaId, forma);
-        return ResponseEntity.ok("Transação realizada com sucesso!");
+        transacaoService.realizarTransacao(usuarioId, ofertaId, formaPagamento);
+        return "Transação realizada com sucesso!";
+    }
+
+    // 📥 GET: lista todas as transações
+    @GetMapping
+    public List<Transacao> listarTransacoes() {
+        return transacaoService.listarTransacoes();
     }
 }

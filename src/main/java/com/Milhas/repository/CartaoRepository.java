@@ -1,4 +1,8 @@
 package com.Milhas.repository;
 
-public interface CartaoRepository {
+
+import com.Milhas.model.CartaoBancario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CartaoRepository extends JpaRepository<CartaoBancario, Long> {
 }

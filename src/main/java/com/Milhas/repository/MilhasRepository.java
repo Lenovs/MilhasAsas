@@ -1,4 +1,7 @@
 package com.Milhas.repository;
 
-public interface MilhasRepository {
+import com.Milhas.model.Milhas;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MilhasRepository extends JpaRepository<Milhas, Long> {
 }
