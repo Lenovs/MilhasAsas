@@ -1,22 +1,34 @@
 package com.Milhas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
-@Data
+@Table(name = "milhas")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Milhas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String companhiaAerea;
+
     private int quantidade;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    @JsonManagedReference
+    @ToString.Exclude
     private User usuario;
+    @OneToOne
+    @JoinColumn(name = "companhia_id")
+    @JsonManagedReference
+    private CompanhiasAereas companhiaArea;
+
+
 }

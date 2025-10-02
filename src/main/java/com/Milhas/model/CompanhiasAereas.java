@@ -4,29 +4,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
-@Table( name = "cartao_bancario")
+@Table(name = "companhias_aereas")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CartaoBancario {
+public class CompanhiasAereas {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String numero;
-    private String nomeTitular;
-    private String validade;
-    private String bandeira;
-    private String nvc ;
+    private String nome;
 
-
-    @ManyToOne
-    @JoinColumn (name = "usuario_id")
+    @OneToOne(mappedBy = "companhiaArea")
     @JsonBackReference
     @ToString.Exclude
-    private User usuario;
+    private Milhas milhas;
 }

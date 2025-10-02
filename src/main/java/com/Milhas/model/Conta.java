@@ -1,14 +1,16 @@
 package com.Milhas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Table(name = "contas")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Conta {
 
     @Id
@@ -17,6 +19,8 @@ public class Conta {
 
     private double saldo;
 
-    @OneToOne(mappedBy = "conta") // ✅ lado inverso
-    private User usuario;
+    @OneToOne(mappedBy = "conta")
+    @JsonBackReference
+    @ToString.Exclude
+    private User user;
 }

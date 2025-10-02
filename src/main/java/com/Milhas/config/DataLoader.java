@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Configuration
 @RequiredArgsConstructor
 public class DataLoader {
@@ -29,8 +31,9 @@ public class DataLoader {
 
             // Criar o usuário e associar a conta
             User usuario = new User();
-            usuario.setNome("Edileno");
+
             usuario.setConta(conta);
+            usuario.setNome("Edileno");
 
             usuario = userRepo.save(usuario);
 
@@ -57,6 +60,8 @@ public class DataLoader {
             transacaoRepo.save(transacao);
 
             System.out.println("✅ Dados de teste carregados com sucesso!");
+            System.out.println(usuario.getConta());
+
         };
     }
 }
