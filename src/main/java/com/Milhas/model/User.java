@@ -43,8 +43,8 @@ public class User {
     @ToString.Exclude
     private List<Milhas> milhas;
 
-    public User(Long id, String nome, String cpf, String email, String senha) {
-        this.id = id;
+    public User( String nome, String cpf, String email, String senha) {
+
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;

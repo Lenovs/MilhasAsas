@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,4 +21,5 @@ public class Oferta {
     private String descricao;
     private double valor;
     private int milhasNecessarias;
+    private LocalDate validade;
 }
