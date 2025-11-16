@@ -4,6 +4,7 @@ import com.Milhas.dto.UserRequestDTO;
 import com.Milhas.dto.UserResponseDTO;
 import com.Milhas.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +17,15 @@ public class UserController {
 
     private final UserService userService;
 
-    // 🔁 POST: Criar novo usuário
-    @PostMapping("/create")
+    // 🔁 POST: Criar novo usuário (rota pública)
+    @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
         UserResponseDTO novoUsuario = userService.createUser(dto);
-        return ResponseEntity.ok(novoUsuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
     // 📥 GET: Listar todos os usuários
+
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> listarUser() {
         List<UserResponseDTO> usuarios = userService.listarUser();

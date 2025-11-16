@@ -5,6 +5,7 @@ import com.Milhas.dto.UserResponseDTO;
 import com.Milhas.model.User;
 import com.Milhas.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 🔁 Criar usuário
     public UserResponseDTO createUser(UserRequestDTO dto) {
-        User user = new User(dto.getNome(), dto.getCpf(), dto.getEmail(), dto.getSenha());
+        User user = new User(dto.getNome(), dto.getCpf(), dto.getEmail(), passwordEncoder.encode(dto.getSenha()));
         return new UserResponseDTO(userRepository.save(user));
     }
 
@@ -44,7 +46,7 @@ public class UserService {
         userExistente.setNome(dto.getNome());
         userExistente.setCpf(dto.getCpf());
         userExistente.setEmail(dto.getEmail());
-        userExistente.setSenha(dto.getSenha());
+        userExistente.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         return new UserResponseDTO(userRepository.save(userExistente));
     }
