@@ -6,6 +6,8 @@ import com.Milhas.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,32 +26,41 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
-    // 📥 GET: Listar todos os usuários
-
+    // 📥 GET: Listar todos os usuários (ADM)
+    @PreAuthorize("hasRole('ADM')")
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> listarUser() {
-        List<UserResponseDTO> usuarios = userService.listarUser();
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(userService.listarUser());
     }
 
-    // 🔍 GET: Buscar usuário por ID
+    // 🔍 GET: Buscar usuário por ID (ADM)
+    @PreAuthorize("hasRole('ADM')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> buscarPorId(@PathVariable Long id) {
-        UserResponseDTO usuario = userService.buscarPorId(id);
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(userService.buscarPorId(id));
     }
 
-    // ✏️ PUT: Atualizar usuário
+    // ✏️ PUT: Atualizar usuário (ADM)
+    @PreAuthorize("hasRole('ADM')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
-        UserResponseDTO usuarioAtualizado = userService.atualizarUsuario(id, dto);
-        return ResponseEntity.ok(usuarioAtualizado);
+        return ResponseEntity.ok(userService.atualizarUsuario(id, dto));
     }
 
-    // ❌ DELETE: Remover usuário
+    // ❌ DELETE: Remover usuário (ADM)
+    @PreAuthorize("hasRole('ADM')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
         userService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 👤 GET: Perfil do usuário logado (UserPlataforma)
+    @PreAuthorize("hasRole('UserPlataforma')")
+    @GetMapping("/me")
+    public ResponseEntity<String> buscarMeuPerfil(Authentication auth) {
+        String email = auth.getName();
+        String role = auth.getAuthorities().toString();
+        return ResponseEntity.ok("Usuário logado: " + email + " | Perfil: " + role);
     }
 }

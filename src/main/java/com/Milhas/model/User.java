@@ -1,19 +1,18 @@
 package com.Milhas.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "usuarios") // evita conflito com palavra reservada "user"
-@Getter
-@Setter
+@Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class User {
 
     @Id
@@ -22,35 +21,43 @@ public class User {
 
     private String nome;
     private String cpf;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @ToString.Exclude
     private String senha;
 
+    // 🔑 Enum armazenado como texto no banco
     @Enumerated(EnumType.STRING)
-    private LoginRole role; // ✅ necessário para autenticação e autorização
+    @Column(nullable = false)
+    private LoginRole role = LoginRole.UserPlataforma; // valor padrão
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @ToString.Exclude
-    private List<CartaoBancario> cartoes;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    // Relacionamento 1:1 com Conta
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conta_id")
-    @JsonManagedReference
-    @ToString.Exclude
     private Conta conta;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonBackReference
-    @ToString.Exclude
-    private List<Milhas> milhas;
+    // Relacionamento 1:N com Milhas
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Milhas> milhas = new ArrayList<>();
 
-    // ✅ Construtor personalizado para facilitar criação manual
+    // Construtor personalizado para criação de usuário
     public User(String nome, String cpf, String email, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
+        this.role = LoginRole.UserPlataforma; // sempre define padrão
+    }
+
+    // Helpers para manter consistência bidirecional
+    public void addMilhas(Milhas m) {
+        milhas.add(m);
+        m.setUsuario(this);
+    }
+
+    public void removeMilhas(Milhas m) {
+        milhas.remove(m);
+        m.setUsuario(null);
     }
 }

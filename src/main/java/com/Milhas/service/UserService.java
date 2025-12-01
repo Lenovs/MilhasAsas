@@ -37,6 +37,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return new UserResponseDTO(user);
     }
+    // Buscar usuario por EMAIL
+    public UserResponseDTO buscarPorEmail(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()-> new RuntimeException("Email não encontrado"));
+        return new UserResponseDTO(user);
+    }
 
     // ✏️ Atualizar usuário
     public UserResponseDTO atualizarUsuario(Long id, UserRequestDTO dto) {
@@ -54,5 +60,11 @@ public class UserService {
     // ❌ Deletar usuário
     public void deletarUsuario(Long id) {
         userRepository.deleteById(id);
+    }
+    // 👤 Buscar perfil do usuário logado
+    public UserResponseDTO buscarMeuPerfil(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com email: " + email));
+        return new UserResponseDTO(user);
     }
 }

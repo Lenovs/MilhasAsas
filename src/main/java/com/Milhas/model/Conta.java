@@ -1,26 +1,24 @@
 package com.Milhas.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "contas")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double saldo;
+    private Double saldo = 0.0;
 
-    @OneToOne(mappedBy = "conta")
-    @JsonBackReference
-    @ToString.Exclude
-    private User user;
+    // Se quiser referência bidirecional, descomente e ajuste mappedBy no User
+    // @OneToOne(mappedBy = "conta", fetch = FetchType.LAZY)
+    // private User usuario;
 }

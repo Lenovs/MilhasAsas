@@ -16,7 +16,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Prefixo "ROLE_" é exigido pelo Spring Security
         return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
@@ -32,25 +31,30 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Pode ser ajustado para lógica de expiração real
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Pode ser ajustado para lógica de bloqueio
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Pode ser ajustado para expiração de senha
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Pode ser ajustado para ativação/desativação de conta
+        return true;
     }
 
     public User getUser() {
         return user;
+    }
+
+    // 🔧 útil para acessar ID em outras partes
+    public Long getId() {
+        return user.getId();
     }
 }

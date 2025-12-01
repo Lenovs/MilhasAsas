@@ -22,15 +22,19 @@ public class AuthService {
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
         try {
+            // 🔐 Autentica credenciais
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getSenha())
             );
 
+            // 🔎 Busca usuário no banco
             User user = userRepository.findByEmail(dto.getEmail())
                     .orElseThrow(() -> new BadCredentialsException("Usuário não encontrado"));
 
+            // 🎟️ Gera token JWT
             String token = jwtUtil.gerarToken(user.getEmail(), user.getRole().name());
 
+            // 📤 Retorna DTO com dados essenciais
             return new LoginResponseDTO(token, user.getId(), user.getEmail(), user.getRole().name());
 
         } catch (BadCredentialsException e) {
