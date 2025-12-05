@@ -1,44 +1,44 @@
 package com.Milhas.config;
 
+import com.Milhas.security.JwtFilter; // ✅ usa a classe que você já tem
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.http.HttpMethod;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    // 🔐 Encoder para senhas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🔐 Configuração de segurança HTTP
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           JwtFilter jwtFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll() // login, registro
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll() // registro público
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 
                         // Endpoints de usuários → apenas ADM
-                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasRole("ADM")
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADM")
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("ADM")
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("ADM")
 
-                        // Endpoints de ofertas → ADM e Gerente
+                        // Endpoints de ofertas → ADM e GerenteNegocios
                         .requestMatchers("/ofertas/**").hasAnyRole("ADM", "GerenteNegocios")
 
                         // Endpoints de contas e milhas → apenas usuários da plataforma
@@ -51,7 +51,12 @@ public class SecurityConfig {
                         // Qualquer outro endpoint exige autenticação
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .sessionManagement(session -> session.sessionCreationPolicy(
+                        org.springframework.security.config.http.SessionCreationPolicy.STATELESS
+                ));
+
+        // ✅ adiciona o filtro JWT
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         // Permitir frames para o H2 console
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
@@ -59,7 +64,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 🔐 AuthenticationManager obtido via AuthenticationConfiguration
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

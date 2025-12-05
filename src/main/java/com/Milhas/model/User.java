@@ -32,32 +32,38 @@ public class User {
     @Column(nullable = false)
     private LoginRole role = LoginRole.UserPlataforma; // valor padrão
 
-    // Relacionamento 1:1 com Conta
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conta_id")
     private Conta conta;
 
-    // Relacionamento 1:N com Milhas
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Milhas> milhas = new ArrayList<>();
 
-    // Construtor personalizado para criação de usuário
+    // Construtor para usuários comuns
     public User(String nome, String cpf, String email, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
-        this.role = LoginRole.UserPlataforma; // sempre define padrão
+        this.role = LoginRole.UserPlataforma;
     }
 
-    // Helpers para manter consistência bidirecional
-    public void addMilhas(Milhas m) {
-        milhas.add(m);
-        m.setUsuario(this);
+    // Construtor para criar usuários com role específico
+    public User(String nome, String cpf, String email, String senha, LoginRole role) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
     }
 
-    public void removeMilhas(Milhas m) {
-        milhas.remove(m);
-        m.setUsuario(null);
-    }
+//    public void addMilhas(Milhas m) {
+//        milhas.add(m);
+//        m.setUsuario(this);
+//    }
+//
+//    public void removeMilhas(Milhas m) {
+//        milhas.remove(m);
+//        m.setUsuario(null);
+//    }
 }

@@ -3,6 +3,7 @@ package com.Milhas.controller;
 import com.Milhas.dto.UserRequestDTO;
 import com.Milhas.dto.UserResponseDTO;
 import com.Milhas.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,35 +20,36 @@ public class UserController {
 
     private final UserService userService;
 
-    // 🔁 POST: Criar novo usuário (rota pública)
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
-        UserResponseDTO novoUsuario = userService.createUser(dto);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto, Authentication auth) {
+        UserResponseDTO novoUsuario = userService.createUser(dto, auth);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
-    // 📥 GET: Listar todos os usuários (ADM)
     @PreAuthorize("hasRole('ADM')")
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> listarUser() {
         return ResponseEntity.ok(userService.listarUser());
     }
 
-    // 🔍 GET: Buscar usuário por ID (ADM)
     @PreAuthorize("hasRole('ADM')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(userService.buscarPorId(id));
     }
 
-    // ✏️ PUT: Atualizar usuário (ADM)
+    @PreAuthorize("hasRole('ADM')")
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponseDTO> buscarPorEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.buscarPorEmail(email));
+    }
+
     @PreAuthorize("hasRole('ADM')")
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
+    public ResponseEntity<UserResponseDTO> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UserRequestDTO dto) {
         return ResponseEntity.ok(userService.atualizarUsuario(id, dto));
     }
 
-    // ❌ DELETE: Remover usuário (ADM)
     @PreAuthorize("hasRole('ADM')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
@@ -55,12 +57,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // 👤 GET: Perfil do usuário logado (UserPlataforma)
     @PreAuthorize("hasRole('UserPlataforma')")
-    @GetMapping("/me")
-    public ResponseEntity<String> buscarMeuPerfil(Authentication auth) {
+    @GetMapping("/me/{email}")
+    public ResponseEntity<UserResponseDTO> buscarMeuPerfil(Authentication auth) {
         String email = auth.getName();
-        String role = auth.getAuthorities().toString();
-        return ResponseEntity.ok("Usuário logado: " + email + " | Perfil: " + role);
+        UserResponseDTO usuario = userService.buscarPorEmail(email);
+        return ResponseEntity.ok(usuario);
     }
 }

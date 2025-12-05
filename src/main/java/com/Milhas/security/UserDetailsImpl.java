@@ -16,6 +16,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Prefixo ROLE_ é padrão do Spring Security
         return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
