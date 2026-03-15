@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Service("ofertaAdminService")
 @Primary
 @RequiredArgsConstructor
 public class OfertaAdminService implements OfertaService {

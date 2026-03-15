@@ -20,6 +20,7 @@ public class User {
     private Long id;
 
     private String nome;
+    @Column(unique = true, nullable = false)
     private String cpf;
 
     @Column(unique = true, nullable = false)

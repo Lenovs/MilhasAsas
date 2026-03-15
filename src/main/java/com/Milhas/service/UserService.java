@@ -8,6 +8,7 @@ import com.Milhas.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +60,24 @@ public class UserService {
     }
 
     // 📥 Listar todos os usuários
-    public List<UserResponseDTO> listarUser() {
+    public List<UserResponseDTO> listarUser(UserResponseDTO dto,Authentication auth) {
+
+        try{
+            if(auth.getAuthorities().stream()
+                    .noneMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADM"))){
+                throw new RuntimeException("Acesso negado: apenas administradores podem listar usuários.");
+            }
         return userRepository.findAll().stream()
                 .map(UserResponseDTO::new)
                 .collect(Collectors.toList());
+
+        } catch (RuntimeException e) {
+        throw e; // Repassa a exceção com a mensagem definida
+    } catch (Exception e) {
+        throw new RuntimeException("Erro ao listar usuários", e);
     }
+
+}
 
     // 🔍 Buscar usuário por ID
     public UserResponseDTO buscarPorId(Long id) {

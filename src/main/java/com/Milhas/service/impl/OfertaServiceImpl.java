@@ -6,13 +6,14 @@ import com.Milhas.model.Oferta;
 import com.Milhas.model.OfertaTipo;
 import com.Milhas.repository.OfertaRepository;
 import com.Milhas.service.OfertaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Service("ofertaServiceImpl")
 public class OfertaServiceImpl implements OfertaService {
 
     private final OfertaRepository ofertaRepository;
@@ -74,8 +75,8 @@ public class OfertaServiceImpl implements OfertaService {
         oferta.setValor(dto.preco());
         oferta.setMilhasNecessarias(dto.pontos());
         oferta.setValidade(dto.validade());
-        oferta.setAtiva(dto.ativo() != null ? dto.ativo() : true);
-        oferta.setOfertaTipo(Enum.valueOf(OfertaTipo.class, dto.tipo())); // ✅ corrigido
+        oferta.setAtiva(Optional.ofNullable(dto.ativo()).orElse(true));
+        oferta.setOfertaTipo(OfertaTipo.valueOf(dto.tipo().toUpperCase()));
 
 
         // vincula ao pai, se existir
@@ -92,6 +93,12 @@ public class OfertaServiceImpl implements OfertaService {
 
     @Override
     public void deleteChild(Long parentId, Long childId) {
-        ofertaRepository.deleteById(childId);
+        Oferta child = ofertaRepository.findById(childId)
+                .orElseThrow(() -> new RuntimeException("Oferta filha não encontrada"));
+        if (child.getOfertaPai() == null || !child.getOfertaPai().getId().equals(parentId)) {
+            throw new RuntimeException("Oferta filha não pertence ao pai informado");
+        }
+        ofertaRepository.delete(child);
     }
+
 }

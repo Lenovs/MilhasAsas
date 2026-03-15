@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface OfertaService {
 
     // 🔎 Buscar todas as ofertas
+
     List<OfertaResponseDTO> findAll();
 
     // 🔎 Buscar oferta por ID

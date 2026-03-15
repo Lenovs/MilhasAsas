@@ -26,10 +26,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
-    @PreAuthorize("hasRole('ADM')")
+
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> listarUser() {
-        return ResponseEntity.ok(userService.listarUser());
+    public ResponseEntity<List<UserResponseDTO>> listarUser(Authentication auth, UserResponseDTO dto) {
+
+        return ResponseEntity.ok(userService.listarUser(dto ,auth));
     }
 
     @PreAuthorize("hasRole('ADM')")
