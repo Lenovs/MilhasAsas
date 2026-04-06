@@ -71,7 +71,7 @@ public class OfertaAdminService implements OfertaService {
     @Transactional
     public OfertaResponseDTO createRoot(OfertaRequestDTO dto) {
         Oferta oferta = new Oferta(
-                Enum.valueOf(OfertaTipo.class, dto.tipo()), // ✅ corrigido
+                Enum.valueOf(OfertaTipo.class, dto.tipo()), // ✅
                 dto.descricao(),
                 dto.preco(),
                 dto.pontos(),

@@ -27,8 +27,10 @@ public class Oferta {
     private String descricao;
     private double valor;
     private int milhasNecessarias;
+
     private LocalDate validade;
-    private boolean ativa = true;
+
+    private boolean ativa = false;
 
     // lado dono da relação: cada oferta filha aponta para seu ofertaPai
     @ManyToOne(fetch = FetchType.LAZY)
