@@ -7,22 +7,7 @@ const Pesquisa: React.RF =()=>{
 
               <h4> Passagens Aéreas</h4>
 
-                  <div>
-                     <input type="text"/>
-                     <h5> ORIGEM</h5>
-                  </div>
-                    <div>
-                         <input type="text"/>
-                         <h5> ORIGEM</h5>
-                    </div>
-                    <div>
-                          <input type="text"/>
-                          <h5> ORIGEM</h5>
-                    </div>
-                    <div>
-                          <input type="text"/>
-                          <h5> ORIGEM</h5>
-                  </div>
+
 
            </div>
 
