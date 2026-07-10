@@ -1,0 +1,44 @@
+.sectionOferta{
+background:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+
+}
+.ofertasCard{
+margin:0.5rem;
+background: rgba(206,149,221, 0.3);
+border-radius:0.3rem;
+width:90%;
+display:flex;
+justify-content:flex-start;
+flex-direction:column;
+
+}
+.ofertasCard .tituloOferta{
+font-size:12px;
+margin-right:42rem;
+margin-top:1rem;
+color: black;
+}
+.ofertas{
+display:flex;
+padding:1rem;
+margin:1rem;
+}
+.card{
+background:rgba(115,99,99,0.19);
+padding:1rem;
+border-radius:0.7rem;
+margin:0.5rem;
+width:10rem;
+}
+.card img{
+border-radius:0.4rem;
+width:9rem;
+}
+.card p{
+font-size:11px;
+color:rgba(109, 19, 98, 0.8);
+}
+

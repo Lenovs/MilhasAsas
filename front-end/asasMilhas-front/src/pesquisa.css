@@ -1,0 +1,15 @@
+.pesquisa-viagem{
+display:flex;
+background:white;
+justify-content:center;
+justify-items:center;
+}
+.container{
+width:90%;
+background:linear-gradient(140deg, #20031e 0%, #550f20 34%, #13033f 66%, #a13aab 88%, #e956dd 100%);
+opacity:50%;
+display:flex;
+padding:0.8rem;
+margin:1.7rem;
+border-radius:2rem;
+}

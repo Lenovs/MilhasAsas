@@ -8,6 +8,6 @@ public class MilhasApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MilhasApplication.class, args);
-		System.out.print("Leno");
+
 	}
 }
