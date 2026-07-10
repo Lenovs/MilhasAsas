@@ -1,3 +1,19 @@
+.btn {
+  font-size: 13px;
+  list-style-type: none;
+  text-align: center;
+  padding: 0.4rem 0.6rem;
+  border:none;
+  border-radius: 1.7rem;
+  color: #000; /* texto preto */
+  background: #ffffff; /* fundo branco */
+  cursor: pointer;
+}
+
+.btn.active {
+  background: blue; /* fundo azul */
+  color: #ffffff;   /* texto branco */
+}
 
 .header{
 display:flex;
@@ -34,17 +50,7 @@ justify-content:space-around;
 margin:0rem;
 width:70%;
 }
-.list ul  li{
-font-size:13px;
-list-style-type:none;
-align-text:center;
-margin:0;
-padding:0.2rem;
-background:blue;
-border-radius:1.7rem;
-color:#ffffff;
-width:25%;
-}
+
 input{
 background:#d9d9d9;
 width:55%;

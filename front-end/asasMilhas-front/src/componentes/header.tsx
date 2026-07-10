@@ -1,6 +1,8 @@
-import React from 'react'
+import React , {useState}from 'react';
+import Button from "./Button";
 
 const Header: React.Rf =()=>{
+    const [active, setActive] = useState('login');
     return (
     <header className="header">
         <div className = "nav-superior">
@@ -10,9 +12,23 @@ const Header: React.Rf =()=>{
 
             <nav className="list">
                <ul>
-                  <li> Login</li>
-                  <li>Cadastrar </li>
-                  <li> Ajuda</li>
+                  <li>
+                   <Button  label="Login" active={active === "login"}
+                  onClick={()=> setActive("login")}
+                  />
+                  </li>
+
+                   <li>
+                   <Button  label="Cadastrar" active={active === "cadastro"}
+                   onClick={()=> setActive("cadastro")}
+                    />
+                    </li>
+
+                    <li>
+                    <Button  label="Ajuda" active={active === "ajuda"}
+                    onClick={()=> setActive("ajuda")}
+                     />
+                     </li>
                </ul>
             <input type="text" placeholder=" Pesquisar" className="search-input"/>
             </nav>
